@@ -1,0 +1,61 @@
+version: '3.7'
+
+services:
+  proxy:
+    image: nginx:alpine
+    container_name: proxy
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    restart: 'unless-stopped'
+    networks:
+      - backend
+  server:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: server
+    ports:
+      - '9000:9000'
+    environment:
+      PORT: 9000
+      NODE_ENV: staging
+      DB_PORT: 3306
+      DB_HOST: database
+      DB_USER: herouser
+      DB_NAME: heroalertdb
+      DB_PASSWORD: herouser1234
+      TWILIO_ACCOUNT_SID: ACb65462fd7f722342fe003c78abdf1af4
+      TWILIO_AUTH_TOKEN: 673042b962600ee8600090547d1d542a
+      TWILIO_NUMBER: '+19107254889'
+      TWILIO_API_KEY_SID: 
+      TWILIO_API_KEY_SECRET: 
+      TWILIO_STATUS_CALLBACK: 
+    # volumes:
+    #   - ./:/app
+    #   - /app/node_modules
+    #   - /app/build
+    restart: 'unless-stopped'
+    networks:
+      - backend
+    depends_on:
+     - database
+  database:
+    image: mariadb:10.2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456789
+      MYSQL_DATABASE: heroalertdb
+      MYSQL_USER: herouser
+      MYSQL_PASSWORD: herouser1234
+    ports:
+     - 4417:3306
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
+volumes:
+  data:
+    driver: local

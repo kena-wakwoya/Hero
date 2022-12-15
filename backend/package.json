@@ -1,0 +1,82 @@
+{
+  "name": "cloud-nodejs",
+  "version": "1.0.0",
+  "description": "cloud-nodejs",
+  "license": "MIT",
+  "scripts": {
+   "build": "rm -rf build/* && babel -d ./build ./src",
+   "start": "node ./build/server.js",
+   "dev": "rm -rf build/* && nodemon --exec babel-node -- ./src/server.js",
+   "prettier": "prettier --write 'src/**/*.{js}'",
+   "lint": "eslint ./src",
+   "lint:fix": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix",
+   "test": "NODE_ENV=test jest --runInBand"
+  },
+  "dependencies": {
+   "@sendgrid/mail": "^7.7.0",
+   "amqplib": "^0.8.0",
+   "aws-sdk": "^2.1244.0",
+   "bcrypt": "^5.1.0",
+   "cluster": "^0.7.7",
+   "colors": "^1.4.0",
+   "cors": "^2.8.5",
+   "dotenv": "^10.0.0",
+   "email-validator": "^2.0.4",
+   "express": "^4.18.2",
+   "express-fileupload": "^1.4.0",
+   "express-fingerprint": "^1.2.2",
+   "express-log-url": "^1.5.1",
+   "generate-password": "^1.7.0",
+   "ioredis": "^5.2.3",
+   "ip": "^1.1.8",
+   "jsonwebtoken": "^8.5.1",
+   "lodash": "^4.17.21",
+   "mkdirp": "^1.0.4",
+   "moment": "^2.29.4",
+   "mongoose": "^6.7.0",
+   "mongoose-paginate-v2": "^1.7.1",
+   "mysql2": "^2.3.3",
+   "pg": "^8.8.0",
+   "pusher": "^5.1.1-beta",
+   "randomatic": "^3.1.1",
+   "sequelize": "^6.25.3",
+   "swagger-ui-express": "^4.5.0",
+   "thread-pool-node": "^1.0.9",
+   "tracer": "^1.1.6",
+   "twilio": "^3.83.1",
+   "uuidv4": "^6.2.13"
+  },
+  "devDependencies": {
+   "@babel/cli": "^7.19.3",
+   "@babel/core": "^7.19.6",
+   "@babel/node": "^7.20.0",
+   "@babel/plugin-proposal-class-properties": "^7.18.6",
+   "@babel/plugin-transform-runtime": "^7.19.6",
+   "@babel/polyfill": "^7.12.1",
+   "@babel/preset-env": "^7.19.4",
+   "@babel/runtime": "^7.20.0",
+   "@types/randomatic": "^3.1.3",
+   "babel-eslint": "^10.1.0",
+   "eslint": "^7.32.0",
+   "eslint-config-prettier": "^8.3.0",
+   "eslint-plugin-prettier": "^3.4.0",
+   "husky": "^6.0.0",
+   "jest": "^26.6.3",
+   "lint-staged": "^10.5.4",
+   "nodemon": "^2.0.20",
+   "prettier": "^2.7.1",
+   "prettierrc": "^0.0.0-5",
+   "supertest": "^6.3.1"
+  },
+  "husky": {
+   "hooks": {
+    "pre-commit": "lint-staged"
+   }
+  },
+  "lint-staged": {
+   "src/**/*.{js}": [
+    "prettier --write",
+    "eslint --fix src/"
+   ]
+  }
+ }
