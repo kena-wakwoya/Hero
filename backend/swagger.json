@@ -1,0 +1,665 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "HERO Rest API",
+        "description": "HERO Rest API Documentation"
+    },
+    "basePath": "/",
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/auth/User/create": {
+            "post": {
+                "tags": ["User"],
+                "description": "Create a new User",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/createUserPayload"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "204": {
+                        "description": "User was successfully created"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/User/profile/update": {
+            "post": {
+                "tags": ["User"],
+                "description": "Update a User user",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "schema": {
+                            "required": ["username", "role", "industries"],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "string"
+                                },
+                                "industries": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "200": {
+                        "description": "user was successfully updated",
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/User/profile/check-site-name/{username}": {
+            "parameters": [
+                {
+                    "name": "username",
+                    "in": "path",
+                    "required": true,
+                    "description": "The site name",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "description": "Check if the User user site name is available",
+                "tags": ["User"],
+                "produces": ["application/json"],
+                "responses": {
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "200": {
+                        "schema": {
+                            "required": ["status", "is_available"],
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "is_available": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/User/profile/set-site-name": {
+            "post": {
+                "tags": ["User"],
+                "description": "Set the site name of a User user",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "schema": {
+                            "required": ["username"],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "200": {
+                        "schema": {
+                            "required": ["status", "is_available"],
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "is_available": {
+                                    "type": "boolean"
+                                },
+                                "user": {
+                                    "type": "object",
+                                    "$ref": "#/definitions/user"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "description": "Login user",
+                "tags": ["User"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/loginPayload"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/set-new-user-password": {
+            "post": {
+                "description": "Set the password of a new user",
+                "tags": ["User"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/setNewUserPasswordPayload"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/genericSuccessResponse"
+                        }
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "410": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/request-password-reset": {
+            "post": {
+                "description": "Request a user password reset",
+                "tags": ["User"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "schema": {
+                            "required": ["email"],
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/genericSuccessResponse"
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/reset-ser-password": {
+            "post": {
+                "description": "Reset the user's password using reset code",
+                "tags": ["User"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "schema": {
+                            "required": ["code", "email"],
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/genericSuccessResponse"
+                        }
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "410": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/resend-verification-code": {
+            "post": {
+                "description": "Request a user verification code resend",
+                "tags": ["User"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "schema": {
+                            "required": ["email"],
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/genericSuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/verification-code-details/{code}": {
+            "parameters": [
+                {
+                    "name": "code",
+                    "in": "path",
+                    "required": true,
+                    "description": "Verification code",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "description": "Get the details of a verification code",
+                "tags": ["User"],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/getCodeDetailsResponse"
+                        }
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "410": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/reset-code-details/{code}": {
+            "parameters": [
+                {
+                    "name": "code",
+                    "in": "path",
+                    "required": true,
+                    "description": "Reset code",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "description": "Get the details of a reset password code",
+                "tags": ["User"],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/getCodeDetailsResponse"
+                        }
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "410": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/genericErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "codeDetails": {
+            "required": ["first_name", "last_name", "value", "email"],
+            "properties": {
+                "value": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "getCodeDetailsResponse": {
+            "required": ["status", "code"],
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "object",
+                    "$ref": "#/definitions/codeDetails"
+                }
+            }
+        },
+        "industry": {
+            "required": ["_id", "name"],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "setNewUserPasswordPayload": {
+            "required": ["code", "password"],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "genericSuccessResponse": {
+            "required": ["status"],
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string",
+                    "default": "success"
+                },
+                "errorCode": {
+                    "type": "string"
+                }
+            }
+        },
+        "genericErrorResponse": {
+            "required": ["message", "status"],
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string",
+                    "default": "error"
+                },
+                "errorCode": {
+                    "type": "string"
+                }
+            }
+        },
+        "loginPayload": {
+            "required": ["email", "password"],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "createUserPayload": {
+            "required": ["email", "username", "first_name", "last_name"],
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "user": {
+            "required": ["_id", "username", "email", "role", "industries", "logo"],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "industries": {
+                    "type": "array",
+                    "$ref": "#/definitions/industry"
+                },
+                "logo": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "user": {
+            "required": ["email", "_id", "first_name", "last_name", "onboarding_step"],
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "is_User": {
+                    "type": "boolean"
+                },
+                "is_User_owner": {
+                    "type": "boolean"
+                },
+                "onboarding_step": {
+                    "type": "number"
+                }
+            }
+        },
+        "users": {
+            "type": "array",
+            "$ref": "#/definitions/user"
+        }
+    }
+}

@@ -1,0 +1,11 @@
+a { cursor: pointer; }
+
+body {
+    background: #F9F9F9;
+    font-family: Gilroy;
+    font-size: 14px;
+}
+
+.app-container {
+    min-height: 350px;
+}
